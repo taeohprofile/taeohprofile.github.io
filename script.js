@@ -358,16 +358,24 @@ function initializeImageEffects() {
         });
     }
     
-    // Scene image parallax
+    // Scene image parallax (limited to prevent overflow)
     const sceneImage = document.querySelector('.scene-image img');
     if (sceneImage) {
         window.addEventListener('scroll', function() {
             const rect = sceneImage.getBoundingClientRect();
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * 0.1;
+            const sceneSection = document.querySelector('.first-scene');
+            const sectionRect = sceneSection.getBoundingClientRect();
             
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                sceneImage.style.transform = `translateY(${-rate}px)`;
+            // Only apply parallax when the scene section is in view
+            if (sectionRect.top < window.innerHeight && sectionRect.bottom > 0) {
+                const scrollProgress = Math.max(0, Math.min(1, (window.innerHeight - sectionRect.top) / (window.innerHeight + sectionRect.height)));
+                const maxOffset = 50; // Limit maximum offset
+                const offset = (scrollProgress - 0.5) * maxOffset;
+                
+                sceneImage.style.transform = `translateY(${offset}px)`;
+            } else {
+                // Reset transform when section is out of view
+                sceneImage.style.transform = 'translateY(0px)';
             }
         });
     }

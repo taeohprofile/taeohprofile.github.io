@@ -892,6 +892,7 @@ section {
 .scene-image {
     position: sticky;
     top: 100px;
+    overflow: hidden;
 }
 
 .scene-image img {
@@ -900,6 +901,7 @@ section {
     border-radius: 12px;
     box-shadow: var(--shadow-xl);
     border: 2px solid rgba(139, 38, 53, 0.3);
+    will-change: transform;
 }
 
 .scene-text {
